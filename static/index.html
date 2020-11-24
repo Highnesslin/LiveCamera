@@ -8,6 +8,7 @@
     <button onclick="onStart()">开始(摄像头+ws推送)</button>
     <button onclick="onEnd()">结束(ws推送)</button>
     <video id="video"></video>
+
     <script type="module">
       import connectWebsocket from './connectWebsocket.js';
       import Camera from './Camera.js';
@@ -26,7 +27,10 @@
 
       window.onStart = async () => {
         // 开启摄像头
-        if (!App.isOpen) await open();
+        if (!App.isOpen) {
+          const openRes = await open();
+          if (!openRes) return; // 开启失败
+        }
 
         // 连接ws
         if (!App.ws) await connect();
@@ -44,10 +48,13 @@
       };
 
       const open = async () => {
-        App.isOpen = await asyncOpen();
-        if (!App.isOpen) {
-          alert('开启失败');
-        }
+        return asyncOpen().then(res => {
+          if (!res) {
+            alert('开启失败');
+          }
+          App.isOpen = res;
+          return App.isOpen;
+        });
       };
 
       const connect = async () => {

@@ -22,7 +22,7 @@ class Camera {
           resolve(true);
         })
         .catch(err => {
-          resolve(null);
+          resolve(false);
         });
     });
   }
