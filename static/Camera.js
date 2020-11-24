@@ -1,11 +1,13 @@
 class Camera {
   constructor(video) {
     if (!video || !video.play) {
-      throw new Error('参数必须为video标签');
+      throw new Error("参数必须为video标签");
     }
 
     this.video = video; // video标签
     this.canvas = null; // canvas标签
+    this.width = 500;
+    this.height = 500;
 
     this.initState(); // 初始化一些状态
   }
@@ -15,13 +17,13 @@ class Camera {
     return new Promise((resolve, reject) => {
       navigator.mediaDevices
         .getUserMedia(Camera.constraints)
-        .then(function (MediaStream) {
+        .then((MediaStream) => {
           this.video.srcObject = MediaStream;
           this.video.play();
 
           resolve(true);
         })
-        .catch(err => {
+        .catch((err) => {
           resolve(false);
         });
     });
@@ -33,15 +35,17 @@ class Camera {
       initCanvas();
     }
 
-    const ctx = this.canvas.getContext('2d');
-    ctx.drawImage(video, 0, 0, 500, 500);
+    const ctx = this.canvas.getContext("2d");
+    ctx.drawImage(video, 0, 0, this.width, this.height);
     return this.canvas.toDataURL();
   }
 
   // 初始化canvas
   initCanvas() {
-    this.canvas = document.createElement('canvas'); // canvas
-    this.canvas.style.cssText = 'display:none;';
+    this.canvas = document.createElement("canvas"); // canvas
+    this.canvas.width = this.width;
+    this.canvas.height = this.height;
+    this.canvas.style.cssText = "display:none;";
     document.body.appendChild(this.canvas);
   }
 
