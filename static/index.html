@@ -1,0 +1,30 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const connectWebsocket = () => {
+        return new Promise(resolve => {
+          const ws = new WebSocket('ws://localhost:8888');
+          ws.onopen = function () {
+            resolve(ws);
+          };
+        });
+      };
+
+      // -----------------------------------------------------
+      connectWebsocket().then(ws => {
+        ws.send(
+          JSON.stringify({
+            type: '1',
+            payload:
+              'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANkAAAAdCAMAAAAQGTnmAAAAaVBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAnbPKNAAAAInRSTlMAEPz0zYIgCPjckYlrWlM8OO/m1MrEsqijdV4wJBICw7RPgPrh8wAAAL9JREFUWMPd11cOglAUhOG59C72QlFn/4s0BhBE1Oc73xZO8ucMVjEVnWqg2VLPGU8ryvHQ0Ttahs6Rakp0fKox6GQUE6FXUMwGgGYcPfRqirmh17rU4mOwp5YCg4RaAgwulLLGS0ApB4w8KskxOlOIazAySt1PMJVShhNgymyoIsW7nCLiEDMnSohKzIVXKsjxqdnRek6GJeGBlosKLGt9hzaLS3xVWfxmOWmIX+6WbjU3CfBP5VuXkvXxYjD3AI3FDnPhRenNAAAAAElFTkSuQmCC',
+          })
+        );
+      });
+    </script>
+  </body>
+</html>

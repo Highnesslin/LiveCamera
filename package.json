@@ -1,0 +1,9 @@
+{
+  "name": "schedule plan",
+  "version": "1.0.0",
+  "dependencies": {
+    "body-parser": "latest",
+    "express": "^4.17.1",
+    "nodejs-websocket": "^1.7.2"
+  }
+}
