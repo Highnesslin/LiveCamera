@@ -5,26 +5,58 @@
     <title>Document</title>
   </head>
   <body>
-    <script>
-      const connectWebsocket = () => {
-        return new Promise(resolve => {
-          const ws = new WebSocket('ws://localhost:8888');
-          ws.onopen = function () {
-            resolve(ws);
-          };
-        });
+    <button onclick="onStart()">开始(摄像头+ws推送)</button>
+    <button onclick="onEnd()">结束(ws推送)</button>
+    <video id="video"></video>
+    <script type="module">
+      import connectWebsocket from './connectWebsocket.js';
+      import Camera from './Camera.js';
+      import { workInLoop, workOutLoop } from './util.js';
+
+      // 开启摄像头
+      const { asyncOpen, getBase64Image } = new Camera(document.querySelector('#video'));
+
+      const App = {
+        ws: null, // websocket实例
+        isOpen: false, // 摄像头是否开启
+        send(msg) {
+          App.ws.send(typeof msg === 'string' ? msg : JSON.stringify(msg));
+        },
       };
 
-      // -----------------------------------------------------
-      connectWebsocket().then(ws => {
-        ws.send(
-          JSON.stringify({
+      window.onStart = async () => {
+        // 开启摄像头
+        if (!App.isOpen) await open();
+
+        // 连接ws
+        if (!App.ws) await connect();
+
+        workInLoop(() => {
+          App.send({
             type: '1',
-            payload:
-              'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANkAAAAdCAMAAAAQGTnmAAAAaVBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAnbPKNAAAAInRSTlMAEPz0zYIgCPjckYlrWlM8OO/m1MrEsqijdV4wJBICw7RPgPrh8wAAAL9JREFUWMPd11cOglAUhOG59C72QlFn/4s0BhBE1Oc73xZO8ucMVjEVnWqg2VLPGU8ryvHQ0Ttahs6Rakp0fKox6GQUE6FXUMwGgGYcPfRqirmh17rU4mOwp5YCg4RaAgwulLLGS0ApB4w8KskxOlOIazAySt1PMJVShhNgymyoIsW7nCLiEDMnSohKzIVXKsjxqdnRek6GJeGBlosKLGt9hzaLS3xVWfxmOWmIX+6WbjU3CfBP5VuXkvXxYjD3AI3FDnPhRenNAAAAAElFTkSuQmCC',
-          })
-        );
-      });
+            payload: getBase64Image(),
+          });
+        }, 2000);
+      };
+
+      window.onEnd = () => {
+        workOutLoop();
+      };
+
+      const open = async () => {
+        App.isOpen = await asyncOpen();
+        if (!App.isOpen) {
+          alert('开启失败');
+        }
+      };
+
+      const connect = async () => {
+        // 建立ws连接
+        App.ws = await connectWebsocket();
+        App.ws.onmessage = msg => {
+          console.log('接收', JSON.parse(msg.data));
+        };
+      };
     </script>
   </body>
 </html>

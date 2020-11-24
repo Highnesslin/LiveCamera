@@ -1,4 +1,4 @@
-var ws = require('nodejs-websocket');
+const ws = require('nodejs-websocket');
 
 ws.createServer(function (conn) {
   conn.on('text', function (str) {
@@ -9,7 +9,6 @@ ws.createServer(function (conn) {
         type: 0,
         payload: {
           msg: '收到',
-          data: obj.payload,
         },
       })
     );
