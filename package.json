@@ -1,9 +1,13 @@
 {
-  "name": "schedule plan",
+  "name": "test-socket",
   "version": "1.0.0",
+  "scripts": {
+    "start": "node ./app.js "
+  },
   "dependencies": {
     "body-parser": "latest",
     "express": "^4.17.1",
-    "nodejs-websocket": "^1.7.2"
+    "nodejs-websocket": "^1.7.2",
+    "open": "^7.3.0"
   }
 }
