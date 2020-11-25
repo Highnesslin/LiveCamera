@@ -32,7 +32,7 @@
         if (!App.isOpen) {
           const openRes = await open();
           console.log('openRes', openRes);
-          // if (!openRes) return; // 开启失败
+          if (!openRes) return; // 开启失败
         }
 
         // 连接ws
