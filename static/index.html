@@ -2,13 +2,31 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>视频流推送</title>
+    <style>
+      #root {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      #video,
+      #img {
+        width: 200px;
+        height: 200px;
+      }
+    </style>
   </head>
   <body>
-    <button onclick="onStart()">开始(摄像头+ws推送)</button>
-    <button onclick="onEnd()">结束(ws推送)</button>
-    <video id="video"></video>
-    <img id="img" src="" alt="" style="width: 500px; height: 500px; object-fit: cover" />
+    <div id="root">
+      <video id="video"></video>
+      <img id="img" src="" alt="图像区域" />
+      <div>
+        <button onclick="onStart()">开始(摄像头+ws推送)</button>
+        <button onclick="onEnd()">结束(ws推送)</button>
+      </div>
+    </div>
 
     <script type="module">
       import connectWebsocket from './connectWebsocket.js';

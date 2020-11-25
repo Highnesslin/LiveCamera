@@ -4,9 +4,6 @@ ws.createServer(function (conn) {
   conn.on('text', function (str) {
     const obj = JSON.parse(str);
 
-    const a = test => {
-      console.log(2);
-    };
     conn.sendText(
       JSON.stringify({
         type: 0,
@@ -29,7 +26,7 @@ ws.createServer(function (conn) {
   conn.sendText(
     JSON.stringify({
       type: 0,
-      message: 'welcome back!',
+      message: '连接成功',
     })
   );
 }).listen(8888);
