@@ -2,12 +2,16 @@
   "name": "test-socket",
   "version": "1.0.0",
   "scripts": {
-    "start": "node ./app.js "
+    "start": "node ./app.js ",
+    "format": "onchange './*.js' '**/**/*'  -- prettier --write {{changed}}"
   },
-  "dependencies": {
+  "devDependencies": {
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "2.2.0",
+    "open": "^7.3.0",
     "body-parser": "latest",
     "express": "^4.17.1",
-    "nodejs-websocket": "^1.7.2",
-    "open": "^7.3.0"
+    "nodejs-websocket": "^1.7.2"
   }
 }

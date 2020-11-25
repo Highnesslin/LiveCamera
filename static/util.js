@@ -8,7 +8,6 @@ function workInLoop(cb, timestamp) {
     workInLoop(cb, timestamp);
   }, timestamp);
 }
-
 function workOutLoop() {
   clearTimeout(control.timeout);
 }

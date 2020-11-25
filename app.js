@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const open = require('open');
 
-require('./websocket/index');
+require('./server/index');
 // const bodyParser = require('body-parser');
 // app.use(bodyParser.json()); //数据JSON类型
 // app.use(bodyParser.urlencoded({ extended: false })); //解析post请求数据

@@ -8,29 +8,22 @@
     <button onclick="onStart()">开始(摄像头+ws推送)</button>
     <button onclick="onEnd()">结束(ws推送)</button>
     <video id="video"></video>
-    <img
-      id="img"
-      src=""
-      alt=""
-      style="width: 500px; height: 500px; object-fit: cover"
-    />
+    <img id="img" src="" alt="" style="width: 500px; height: 500px; object-fit: cover" />
 
     <script type="module">
-      import connectWebsocket from "./connectWebsocket.js";
-      import Camera from "./Camera.js";
-      import { workInLoop, workOutLoop } from "./util.js";
+      import connectWebsocket from './connectWebsocket.js';
+      import Camera from './Camera.js';
+      import { workInLoop, workOutLoop } from './util.js';
 
-      // 开启摄像头
-      const { asyncOpen, getBase64Image } = new Camera(
-        document.querySelector("#video")
-      );
+      // 摄像头相关
+      const { asyncOpen, getBase64Image, close } = new Camera(document.querySelector('#video'));
 
-      const img = document.querySelector("#img");
+      const img = document.querySelector('#img');
       const App = {
         ws: null, // websocket实例
         isOpen: false, // 摄像头是否开启
         send(msg) {
-          App.ws.send(typeof msg === "string" ? msg : JSON.stringify(msg));
+          App.ws.send(typeof msg === 'string' ? msg : JSON.stringify(msg));
         },
       };
 
@@ -38,8 +31,8 @@
         // 开启摄像头
         if (!App.isOpen) {
           const openRes = await open();
-          console.log("openRes", openRes);
-          if (!openRes) return; // 开启失败
+          console.log('openRes', openRes);
+          // if (!openRes) return; // 开启失败
         }
 
         // 连接ws
@@ -48,7 +41,7 @@
         workInLoop(() => {
           const src = getBase64Image();
           App.send({
-            type: "1",
+            type: '1',
             payload: src,
           });
           img.src = src;
@@ -57,12 +50,13 @@
 
       window.onEnd = () => {
         workOutLoop();
+        close();
       };
 
       const open = async () => {
-        return asyncOpen().then((res) => {
+        return asyncOpen().then(res => {
           if (!res) {
-            alert("开启失败");
+            alert('开启失败');
           }
           App.isOpen = res;
           return App.isOpen;
@@ -72,8 +66,8 @@
       const connect = async () => {
         // 建立ws连接
         App.ws = await connectWebsocket();
-        App.ws.onmessage = (msg) => {
-          console.log("接收", JSON.parse(msg.data));
+        App.ws.onmessage = msg => {
+          console.log('接收', JSON.parse(msg.data));
         };
       };
     </script>
