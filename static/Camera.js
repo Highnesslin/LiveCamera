@@ -25,7 +25,7 @@ class Camera {
         .then(MediaStream => {
           // 媒体流跟踪，用于后续关闭
           this.MediaStreamTrack =
-            typeof stream.stop === 'function' ? stream : stream.getTracks()[0];
+            typeof MediaStream.stop === 'function' ? stream : stream.getTracks()[0];
 
           this.video.srcObject = MediaStream;
           this.video.play();
@@ -33,6 +33,7 @@ class Camera {
           resolve(true);
         })
         .catch(err => {
+          console.log(err);
           resolve(false);
         });
     });
